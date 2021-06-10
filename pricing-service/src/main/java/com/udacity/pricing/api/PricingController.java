@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
+
 /**
  * Implements a REST-based controller for the pricing service.
  */
@@ -22,6 +24,12 @@ public class PricingController {
      * @param vehicleId ID number of the vehicle for which the price is requested
      * @return price of the vehicle, or error that it was not found.
      */
+    PricingService pricingService;
+
+    public PricingController(PricingService pricingService){
+        this.pricingService=pricingService;
+    }
+
     @GetMapping
     public Price get(@RequestParam Long vehicleId) {
         try {
@@ -31,5 +39,7 @@ public class PricingController {
                     HttpStatus.NOT_FOUND, "Price Not Found", ex);
         }
 
+
     }
+
 }
