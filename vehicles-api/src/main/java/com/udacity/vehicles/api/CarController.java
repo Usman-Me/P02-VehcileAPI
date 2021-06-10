@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +34,7 @@ class CarController {
     private final CarService carService;
     private final CarResourceAssembler assembler;
 
-    @Autowired
+
     CarController(CarService carService, CarResourceAssembler assembler) {
         this.carService = carService;
         this.assembler = assembler;
@@ -48,10 +47,8 @@ class CarController {
      */
     @GetMapping
     Resources<Resource<Car>> list() {
-        List<Resource<Car>> resources = carService.list().stream().map(assembler::toResource)
-                .collect(Collectors.toList());
-        return new Resources<>(resources,
-                linkTo(methodOn(CarController.class).list()).withSelfRel());
+        List<Resource<Car>> resources = carService.list().stream().map(assembler::toResource).collect(Collectors.toList());
+        return new Resources<>(resources, linkTo(methodOn(CarController.class).list()).withSelfRel());
     }
 
     /**
@@ -67,9 +64,9 @@ class CarController {
          *   Update the first line as part of the above implementing.
          *   --> DONE!
          */
-        Car newCar = carService.findById(id);
+        Car car = carService.findById(id);
 
-        return assembler.toResource(newCar);
+        return assembler.toResource(car);
     }
 
     /**
@@ -86,9 +83,9 @@ class CarController {
          *   Update the first line as part of the above implementing.
          *   --> DONE!
          */
-        Car savedCar = carService.save(car);
+         car = carService.save(car);
 
-        Resource<Car> resource = assembler.toResource(savedCar);
+        Resource<Car> resource = assembler.toResource(car);
         return ResponseEntity.created(new URI(resource.getId().expand().getHref())).body(resource);
     }
 
@@ -108,9 +105,9 @@ class CarController {
          *   --> DONE!
          */
         car.setId(id);
-        Car savedCar = carService.save(car);
+        car = carService.save(car);
 
-        Resource<Car> resource = assembler.toResource(savedCar);
+        Resource<Car> resource = assembler.toResource(car);
         return ResponseEntity.ok(resource);
     }
 

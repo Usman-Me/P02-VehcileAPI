@@ -14,6 +14,8 @@ public class PriceClient {
     private static final Logger log = LoggerFactory.getLogger(PriceClient.class);
 
     private final WebClient client;
+    private static final String host="localhost";
+    private static final int port=8762;
 
     public PriceClient(WebClient pricing) {
         this.client = pricing;
@@ -35,6 +37,8 @@ public class PriceClient {
             Price price = client
                     .get()
                     .uri(uriBuilder -> uriBuilder
+                            .host(host)
+                            .port(port)
                             .path("services/price/")
                             .queryParam("vehicleId", vehicleId)
                             .build()

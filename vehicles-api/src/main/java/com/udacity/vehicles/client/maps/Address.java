@@ -1,13 +1,26 @@
 package com.udacity.vehicles.client.maps;
 
+import javax.persistence.*;
+
 /**
  * Declares a class to store an address, city, state and zip code.
  */
+
+@Entity
 public class Address {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "address")
     private String address;
+    @Column(name = "city")
     private String city;
+    @Column(name = "state")
     private String state;
+    @Column(name = "zip")
     private String zip;
 
     public Address() {

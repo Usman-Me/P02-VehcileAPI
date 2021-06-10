@@ -45,7 +45,7 @@ public class CarService {
      * @return a list of all vehicles in the CarRepository
      */
     public List<Car> list() {
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     /**
@@ -59,7 +59,7 @@ public class CarService {
          *   If it does not exist, throw a CarNotFoundException
          *   Remove the below code as part of your implementation.
          *   --> DONE!
-         */
+         OLD start
         Car car = new Car();
         Optional<Car> optionalCar = repository.findById(id);
         if(optionalCar.isPresent()){
@@ -68,7 +68,10 @@ public class CarService {
         else
         {
             throw new CarNotFoundException();
-        }
+        } OLD End
+*/
+        Car car = this.repository.findById(id).orElseThrow(CarNotFoundException::new);
+        car.setPrice(this.priceClient.getPrice(id));
 
         /**
          * TODO: Use the Pricing Web client you create in `VehiclesApiApplication`
@@ -77,11 +80,10 @@ public class CarService {
          * --> DONE!
          * Note: The car class file uses @transient, meaning you will need to call
          *   the pricing service each time to get the price.
-         */
-
+         OLD Start
         String carPrice = priceClient.getPrice(car.getId());
         car.setPrice(carPrice);
-
+ OLD ENd
         /**
          * TODO: Use the Maps Web client you create in `VehiclesApiApplication`
          *   to get the address for the vehicle. You should access the location
@@ -90,9 +92,13 @@ public class CarService {
          * --> DONE!
          * Note: The Location class file also uses @transient for the address,
          * meaning the Maps service needs to be called each time for the address.
-         */
+         * OLD START
         Location carLocation =mapsClient.getAddress(car.getLocation());
         car.setLocation(carLocation);
+        OLD END
+         */
+        Location location = car.getLocation();
+        car.setLocation(mapsClient.getAddress(location));
 
 
         return car;
