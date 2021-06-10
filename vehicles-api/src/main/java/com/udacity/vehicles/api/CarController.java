@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.ResponseEntity;
@@ -34,10 +35,12 @@ class CarController {
     private final CarService carService;
     private final CarResourceAssembler assembler;
 
+    @Autowired
     CarController(CarService carService, CarResourceAssembler assembler) {
         this.carService = carService;
         this.assembler = assembler;
     }
+
 
     /**
      * Creates a list to store any vehicles.
@@ -64,9 +67,9 @@ class CarController {
          *   Update the first line as part of the above implementing.
          *   --> DONE!
          */
-        Car car = carService.findById(id);
+        Car newCar = carService.findById(id);
 
-        return assembler.toResource(new Car());
+        return assembler.toResource(newCar);
     }
 
     /**
@@ -107,7 +110,7 @@ class CarController {
         car.setId(id);
         Car savedCar = carService.save(car);
 
-        Resource<Car> resource = assembler.toResource(new Car());
+        Resource<Car> resource = assembler.toResource(savedCar);
         return ResponseEntity.ok(resource);
     }
 
